@@ -1,0 +1,58 @@
+--Customers total pent on best artist
+
+Using CTE
+
+with best_artist as
+(select a.artist_id, a.name, sum(il.unit_price*il.quantity) as Total_spent
+from artist a
+join album al
+on a.artist_id=al.artist_id
+join track t
+on al.album_id=t.album_id
+join invoice_line il
+on il.track_id=t.track_id
+group by a.artist_id, a.name
+order by 3 desc
+limit 1)
+
+select c.customer_id, c.first_name, c.last_name,ba.name, round(sum(il.unit_price*il.quantity)) as Amount_Spent
+from customer c
+join invoice i
+on c.customer_id=i.customer_id
+join invoice_line il
+on i.invoice_id=il.invoice_id
+join track t
+on il.track_id=t.track_id
+join album al
+on al.album_id=t.album_id 
+join best_artist ba
+on ba.artist_id=al.artist_id
+group by c.customer_id, c.first_name, c.last_name,ba.name
+order by 5 desc
+
+
+--Countrywise Maximum Spent by Customer 
+
+With recursive
+
+top_customer as 
+
+(select c.customer_id, c.first_name, c.last_name, i.billing_country, sum(i.total) as total_spending
+from customer c
+join invoice i
+on c.customer_id=i.customer_id
+group by c.customer_id, c.first_name, c.last_name, i.billing_country
+order by 5 desc),
+
+top_country as
+
+(select billing_country, max(total_spending) as max_spending
+from top_customer
+group by billing_country)
+
+select tc.billing_country, 	tc.total_spending, tc.first_name, tc.last_name, tc.customer_id
+from top_customer tc
+join top_country tco
+on tc.billing_country=tco.billing_country
+where tc.total_spending=tco.max_spending
+order by 1
