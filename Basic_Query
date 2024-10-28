@@ -1,10 +1,10 @@
 
 --Senior most Employee Based on Job Title
 
-SELECT title, last_name, first_name 
-FROM employee
-ORDER BY levels DESC
-LIMIT 1
+select title, last_name, first_name 
+from employee
+order by levels DESC
+limit 1
 
 --Countries with Total Invoices
 
