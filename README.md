@@ -1,2 +1,2 @@
 # music_store_analysis_sql
-Analysing music store suing SQL
+I have analysed music store data using sum, max, recursive, count, CTE function
