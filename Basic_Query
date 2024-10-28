@@ -1,0 +1,41 @@
+
+--Senior most Employee Based on Job Title
+
+SELECT title, last_name, first_name 
+FROM employee
+ORDER BY levels DESC
+LIMIT 1
+
+--Countries with Total Invoices
+
+select billing_country as Country,count(*) as Total_invoice
+from invoice
+group by billing_country
+order by 2 desc
+
+--Top 3 Countries with Invoices
+
+select billing_country as Country,count(*) as Total_invoice
+from invoice
+group by billing_country
+order by 2 desc
+limit 3
+
+--City wise Total Invoices
+
+SELECT billing_city, round(sum(total)) AS total_invoice 
+FROM invoice
+GROUP BY billing_city
+ORDER BY 2 DESC
+
+--Top 5 Customers who Spend Maximum
+
+SELECT c.customer_id, c.first_name, c.last_name, i.billing_city, round(sum(i.total)) AS Total_invoice 
+FROM customer c
+join invoice i
+on c.customer_id=i.customer_id
+GROUP BY c.customer_id, c.first_name, c.last_name, i.billing_city
+ORDER BY 5 DESC
+Limit 5
+
+
